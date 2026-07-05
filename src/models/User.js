@@ -22,6 +22,14 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING(255),
     allowNull: false,
   },
+  token: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+  },
+  refToken: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+  },
 }, {
   timestamps: true,
   hooks: {
