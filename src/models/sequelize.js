@@ -4,12 +4,14 @@ require('dotenv').config();
 let sequelize;
 
 try {
-  sequelize = new Sequelize(process.env.POSTGRES_URL, {
+  const url = new URL(process.env.POSTGRES_URL_NON_POOLING);
+  sequelize = new Sequelize(url.pathname.slice(1), url.username, url.password, {
+    host: url.hostname,
+    port: url.port,
     dialect: 'postgres',
     logging: false,
     dialectOptions: {
       ssl: {
-        require: true,
         rejectUnauthorized: false,
       },
     },
