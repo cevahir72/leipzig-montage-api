@@ -8,8 +8,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', routes);
 
-app.use(express.static('public'));
-
 app.get('/', (req, res) => {
   res.send('Leipzig Montage API');
 });
