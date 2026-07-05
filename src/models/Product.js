@@ -7,16 +7,24 @@ const Product = sequelize.define('Product', {
     primaryKey: true,
     autoIncrement: true,
   },
+  productId: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+  },
+  imageUrl: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+  },
   name: {
     type: DataTypes.STRING(200),
     allowNull: false,
   },
-  description: {
-    type: DataTypes.TEXT,
+  minCost: {
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
-  price: {
-    type: DataTypes.DECIMAL(10, 2),
+  maxCost: {
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
   userId: {
