@@ -2,7 +2,11 @@ const { Product } = require('../models');
 
 exports.calculate = async (req, res) => {
   try {
-    const { product_list } = req.body;
+    let { product_list } = req.body;
+
+    if (typeof product_list === 'string') {
+      product_list = product_list.split(',').map(s => s.trim()).filter(Boolean);
+    }
 
     if (!Array.isArray(product_list) || product_list.length === 0) {
       return res.status(400).json({ error: 'product_list array required' });
