@@ -8,6 +8,10 @@ exports.calculate = async (req, res) => {
       product_list = product_list.split(',').map(s => s.trim()).filter(Boolean);
     }
 
+    if (Array.isArray(product_list) && product_list.length === 1 && typeof product_list[0] === 'string' && product_list[0].includes(',')) {
+      product_list = product_list[0].split(',').map(s => s.trim()).filter(Boolean);
+    }
+
     if (!Array.isArray(product_list) || product_list.length === 0) {
       return res.status(400).json({ error: 'product_list array required' });
     }
