@@ -12,4 +12,9 @@ app.get('/', (req, res) => {
   res.send('Leipzig Montage API');
 });
 
+app.use((err, req, res, next) => {
+  console.error('Hata:', err);
+  res.status(500).json({ error: 'Sunucu hatası' });
+});
+
 module.exports = app;
