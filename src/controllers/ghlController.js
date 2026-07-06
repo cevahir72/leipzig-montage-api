@@ -3,7 +3,7 @@ const { Product } = require('../models');
 exports.calculate = async (req, res) => {
   try {
     let { product_list } = req.body;
-
+    console.log("Gelen Raw Data:", req.body.product_list)
     if (typeof product_list === 'string') {
       product_list = product_list.split(',').map(s => s.trim()).filter(Boolean);
     }
