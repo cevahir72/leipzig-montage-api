@@ -4,7 +4,8 @@ exports.calculate = async (req, res) => {
   try {
     let rawData = req.body.product_list;
     let product_list = [];
-
+      console.log('Gelen veri:', rawData);
+      console.log('Gelen veri tipi:', typeof rawData.product_list);
     // 1. Eğer dizi geliyorsa ve ilk eleman virgül içeriyorsa, o elemanı parçala
     if (Array.isArray(rawData) && rawData.length > 0 && typeof rawData[0] === 'string' && rawData[0].includes(',')) {
         product_list = rawData[0].split(',').map(s => s.trim()).filter(Boolean);
