@@ -3,17 +3,25 @@ const { Product } = require('../models');
 exports.calculate = async (req, res) => {
   try {
     let { product_list } = req.body;
-    console.log("Gelen Raw Data:", req.body.product_list)
-    if (typeof product_list === 'string') {
-      product_list = product_list.split(',').map(s => s.trim()).filter(Boolean);
-    }
+    
+    // Gelen veriyi loglayarak GHL'in ne gönderdiğini net görün
+    console.log("Gelen Raw Data:", JSON.stringify(req.body));
 
-    if (Array.isArray(product_list) && product_list.length === 1 && typeof product_list[0] === 'string' && product_list[0].includes(',')) {
-      product_list = product_list[0].split(',').map(s => s.trim()).filter(Boolean);
+    // 1. GHL bazen veriyi JSON string olarak gönderir, bunu temizleyelim
+    if (typeof product_list === 'string') {
+        // "[]" veya gereksiz karakterlerden kurtul
+        product_list = product_list.replace(/[\[\]"]/g, ''); 
+        product_list = product_list.split(',').map(s => s.trim()).filter(Boolean);
+    } 
+    // Eğer GHL bir dizi gönderiyorsa ama içindekiler stringse (örneğin ["40594928,50620998"])
+    else if (Array.isArray(product_list) && product_list.length > 0) {
+        if (typeof product_list[0] === 'string' && product_list[0].includes(',')) {
+            product_list = product_list[0].split(',').map(s => s.trim()).filter(Boolean);
+        }
     }
 
     if (!Array.isArray(product_list) || product_list.length === 0) {
-      return res.status(400).json({ error: 'product_list array required' });
+      return res.status(400).json({ error: 'product_list array required', received: req.body });
     }
 
     let totalMin = 0;
