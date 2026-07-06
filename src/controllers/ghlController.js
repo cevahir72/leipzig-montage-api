@@ -2,21 +2,20 @@ const { Product } = require('../models');
 
 exports.calculate = async (req, res) => {
   try {
-    // 1. Gelen veriyi al
-    let rawProductList = req.body.product_list;
-    console.log("Gelen Raw Data:", rawProductList);
-
-    // 2. Eğer bir string ise virgüllerden ayır ve diziye çevir
+    let rawData = req.body.product_list;
     let product_list = [];
-    if (typeof rawProductList === 'string') {
-        product_list = rawProductList.split(',').map(s => s.trim()).filter(Boolean);
-    } else if (Array.isArray(rawProductList)) {
-        product_list = rawProductList;
-    }
 
-    // 3. Eğer dizi boşsa hata dön
-    if (product_list.length === 0) {
-      return res.status(400).json({ error: 'product_list array required', received: req.body });
+    // 1. Eğer dizi geliyorsa ve ilk eleman virgül içeriyorsa, o elemanı parçala
+    if (Array.isArray(rawData) && rawData.length > 0 && typeof rawData[0] === 'string' && rawData[0].includes(',')) {
+        product_list = rawData[0].split(',').map(s => s.trim()).filter(Boolean);
+    } 
+    // 2. Eğer string geliyorsa direkt parçala (eski GHL formatı için)
+    else if (typeof rawData === 'string') {
+        product_list = rawData.split(',').map(s => s.trim()).filter(Boolean);
+    } 
+    // 3. Eğer zaten düzgün dizi geliyorsa (örneğin ["123", "456"])
+    else if (Array.isArray(rawData)) {
+        product_list = rawData;
     }
 
     let totalMin = 0;
